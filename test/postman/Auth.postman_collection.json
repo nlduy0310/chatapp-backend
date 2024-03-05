@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "8e9819b5-6934-4deb-b7d9-d64c5d5c112a",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33163440"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Request Validation Test",
+					"item": [
+						{
+							"name": "Empty body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'email' field is required\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing email field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'email' field is required\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"asd123456qwe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid email type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'email' must be a string\");\r",
+											"});\r",
+											"\r",
+											"var values = pm.environment.get(\"values\");\r",
+											"if (values && values.length > 0) {\r",
+											"    postman.setNextRequest(\"Invalid email type\")\r",
+											"}\r",
+											"else {\r",
+											"    pm.environment.unset(\"values\");\r",
+											"    pm.environment.unset(\"body\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var values = pm.environment.get(\"values\");\r",
+											"\r",
+											"if (!values) {\r",
+											"    values = [101, false, [\"a\", 101, false]];\r",
+											"}\r",
+											"\r",
+											"var currentValue = values.shift();\r",
+											"var body = {\r",
+											"    email: currentValue\r",
+											"}\r",
+											"pm.environment.set(\"body\", JSON.stringify(body));\r",
+											"pm.environment.set(\"values\", values);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid email address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"Invalid email address\");\r",
+											"});\r",
+											"\r",
+											"var values = pm.environment.get(\"values\");\r",
+											"if (values && values.length > 0) {\r",
+											"    postman.setNextRequest(\"Invalid email address\")\r",
+											"}\r",
+											"else {\r",
+											"    pm.environment.unset(\"values\");\r",
+											"    pm.environment.unset(\"body\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var values = pm.environment.get(\"values\");\r",
+											"\r",
+											"if (!values) {\r",
+											"    values = [\"namegmail.com\", \"name@@gmail.com\", \"a@g.\"];\r",
+											"}\r",
+											"\r",
+											"var currentValue = values.shift();\r",
+											"var body = {\r",
+											"    email: currentValue\r",
+											"}\r",
+											"pm.environment.set(\"body\", JSON.stringify(body));\r",
+											"pm.environment.set(\"values\", values);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing password field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'password' field is required\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"name@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid password type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'password' must be a string\");\r",
+											"});\r",
+											"\r",
+											"var values = pm.environment.get(\"values\");\r",
+											"if (values && values.length > 0) {\r",
+											"    postman.setNextRequest(\"Invalid password type\")\r",
+											"}\r",
+											"else {\r",
+											"    pm.environment.unset(\"values\");\r",
+											"    pm.environment.unset(\"body\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var values = pm.environment.get(\"values\");\r",
+											"\r",
+											"if (!values) {\r",
+											"    values = [101, false, [\"a\", 101, false]];\r",
+											"}\r",
+											"\r",
+											"var currentValue = values.shift();\r",
+											"var body = {\r",
+											"    email: \"name@gmail.com\",\r",
+											"    password: currentValue\r",
+											"}\r",
+											"pm.environment.set(\"body\", JSON.stringify(body));\r",
+											"pm.environment.set(\"values\", values);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid password length",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'password' field's length must be between 8 and 32\");\r",
+											"});\r",
+											"\r",
+											"var values = pm.environment.get(\"values\");\r",
+											"if (values && values.length > 0) {\r",
+											"    postman.setNextRequest(\"Invalid password length\")\r",
+											"}\r",
+											"else {\r",
+											"    pm.environment.unset(\"values\");\r",
+											"    pm.environment.unset(\"body\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var values = pm.environment.get(\"values\");\r",
+											"\r",
+											"if (!values) {\r",
+											"    values = [\r",
+											"        \"asd123\", \r",
+											"        \"asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123\"];\r",
+											"}\r",
+											"\r",
+											"var currentValue = values.shift();\r",
+											"var body = {\r",
+											"    email: \"name@gmail.com\",\r",
+											"    password: currentValue\r",
+											"}\r",
+											"pm.environment.set(\"body\", JSON.stringify(body));\r",
+											"pm.environment.set(\"values\", values);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Password is not alpha-numeric",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Correct error message\", function () {\r",
+											"    pm.response.to.have.body(\"'password' must be an alphanumeric string\");\r",
+											"});\r",
+											"\r",
+											"var values = pm.environment.get(\"values\");\r",
+											"if (values && values.length > 0) {\r",
+											"    postman.setNextRequest(\"Password is not alpha-numeric\");\r",
+											"}\r",
+											"else {\r",
+											"    pm.environment.unset(\"values\");\r",
+											"    pm.environment.unset(\"body\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var values = pm.environment.get(\"values\");\r",
+											"\r",
+											"if (!values) {\r",
+											"    values = [\"asd123hdf@\", \"jrdf624dD?\"];\r",
+											"}\r",
+											"\r",
+											"var currentValue = values.shift();\r",
+											"var body = {\r",
+											"    email: \"name@gmail.com\",\r",
+											"    password: currentValue\r",
+											"}\r",
+											"pm.environment.set(\"body\", JSON.stringify(body));\r",
+											"pm.environment.set(\"values\", values);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		}
+	]
+}
