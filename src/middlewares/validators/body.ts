@@ -10,7 +10,7 @@ export const createEmailChain = (
 		.withMessage(`'${fieldName}' field is required`)
 		.bail({ level: bailLevel })
 		.isString()
-		.withMessage(`Invalid type on '${fieldName}' field`)
+		.withMessage(`'${fieldName}' must be a string`)
 		.bail({ level: bailLevel })
 		.trim()
 		.isEmail()
