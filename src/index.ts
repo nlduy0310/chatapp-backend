@@ -25,14 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
-	session({
-		secret: process.env.SESSION_SECRET || DEFAULT_SESSION_SECRET,
-		saveUninitialized: false,
-		resave: false,
-		cookie: {
-			maxAge: 1000 * 60, // 1 minutes
-		},
-	})
+    session({
+        secret: process.env.SESSION_SECRET || DEFAULT_SESSION_SECRET,
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            maxAge: 1000 * 60, // 1 minutes
+        },
+    }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,24 +42,24 @@ app.use('/auth', authRouter);
 
 // ----- Catching undefined routes -----
 app.use((req, res, next) => {
-	return res.sendStatus(404);
+    return res.sendStatus(404);
 });
 
 // ----- Error handler -----
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-	return res.sendStatus(500);
+    return res.sendStatus(500);
 };
 app.use(errorHandler);
 
 // ----- Connect -----
 mongoose
-	.connect(process.env.MONGODB_CONNECTION_STRING ?? '')
-	.then(() => {
-		console.log('Connected to MongoDB');
-		app.listen(PORT, () => {
-			console.log(`App listening on port ${PORT}`);
-		});
-	})
-	.catch(() => {
-		console.error('Can not connect to MongoDB');
-	});
+    .connect(process.env.MONGODB_CONNECTION_STRING ?? '')
+    .then(() => {
+        console.log('Connected to MongoDB');
+        app.listen(PORT, () => {
+            console.log(`App listening on port ${PORT}`);
+        });
+    })
+    .catch(() => {
+        console.error('Can not connect to MongoDB');
+    });

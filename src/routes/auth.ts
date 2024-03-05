@@ -6,19 +6,18 @@ import { validationResultHandler } from '@middlewares/validators';
 const router = Router();
 
 router.post(
-	'/register',
-	createEmailChain('email', 'request'),
-	createPasswordChain('password', 'request'),
-	validationResultHandler,
-	controller.handleRegister
+    '/register',
+    createEmailChain('email', 'request'),
+    createPasswordChain('password', 'request'),
+    validationResultHandler,
+    controller.handleRegister,
 );
 
 router.post(
-	'/login',
-	createEmailChain('email', 'request'),
-	createPasswordChain('password', 'request'),
-	validationResultHandler,
-
-)
+    '/login',
+    createEmailChain('email', 'request'),
+    createPasswordChain('password', 'request'),
+    validationResultHandler,
+);
 
 export default router;

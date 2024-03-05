@@ -7,32 +7,32 @@ type SeederFunction = (hard: boolean) => Promise<void>;
 const funcMap = new Map<string, SeederFunction>([['user', seedUser]]);
 
 async function main() {
-	const argv = minimist(process.argv.slice(2));
+    const argv = minimist(process.argv.slice(2));
 
-	if (!argv?.name) {
-		return console.error('Please provide a name argument');
-	}
+    if (!argv?.name) {
+        return console.error('Please provide a name argument');
+    }
 
-	const seederFunction = funcMap.get(argv.name);
-	if (!seederFunction) {
-		return console.error(`Invalid name: %c${argv.name}`, 'color: red');
-	}
-	let hard = argv._.includes('hard') ? true : false;
-	await seederFunction(hard);
-	return console.log('Seeder completed');
+    const seederFunction = funcMap.get(argv.name);
+    if (!seederFunction) {
+        return console.error(`Invalid name: %c${argv.name}`, 'color: red');
+    }
+    let hard = argv._.includes('hard') ? true : false;
+    await seederFunction(hard);
+    return console.log('Seeder completed');
 }
 
 mongoose
-	.connect(process.env.MONGODB_CONNECTION_STRING ?? '')
-	.then(async () => {
-		console.log('Connected to MongoDB');
-		await main();
-	})
+    .connect(process.env.MONGODB_CONNECTION_STRING ?? '')
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        await main();
+    })
     .catch((err) => {
         console.log(err);
-		console.error('Can not connect to MongoDB');
-	})
-	.finally(async () => {
-		await mongoose.disconnect();
-		console.log('Disconnected from MongoDB');
-	});
+        console.error('Can not connect to MongoDB');
+    })
+    .finally(async () => {
+        await mongoose.disconnect();
+        console.log('Disconnected from MongoDB');
+    });
