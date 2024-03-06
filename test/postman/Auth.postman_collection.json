@@ -10,7 +10,7 @@
             "name": "Register",
             "item": [
                 {
-                    "name": "Request Validation Test",
+                    "name": "Invalid Request Body",
                     "item": [
                         {
                             "name": "Empty body",
@@ -469,8 +469,92 @@
                             "response": []
                         }
                     ]
+                },
+                {
+                    "name": "Valid Request  Body",
+                    "item": [
+                        {
+                            "name": "Existing email",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "pm.test(\"Status code is 409\", function () {\r",
+                                            "    pm.response.to.have.status(409);\r",
+                                            "})\r",
+                                            "\r",
+                                            "pm.test(\"Correct error message\", function () {\r",
+                                            "    pm.response.to.have.body('Email has already been used');\r",
+                                            "})"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"email\": \"mheineke0@ted.com\",\r\n    \"password\": \"asdqwd123\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/auth/register",
+                                    "host": ["{{baseUrl}}"],
+                                    "path": ["auth", "register"]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Non-existing email",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "pm.test(\"Status code is 200\", function () {\r",
+                                            "    pm.response.to.have.status(200);\r",
+                                            "})\r",
+                                            "\r",
+                                            "pm.test(\"Success message\", function () {\r",
+                                            "    pm.response.to.have.body('Account registered successfully');\r",
+                                            "})"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"email\": \"mynewemail@outlook.com\",\r\n    \"password\": \"abcde12345\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/auth/register",
+                                    "host": ["{{baseUrl}}"],
+                                    "path": ["auth", "register"]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
                 }
-            ]
+            ],
+            "description": "Preconditions:\n\n- \"mheineke0@ted.com\" is already used\n- \"mynewemail@outlook.com\" is not used"
         }
     ],
     "event": [
