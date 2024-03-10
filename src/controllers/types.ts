@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, ErrorRequestHandler } from 'express';
 
 export type RouteController = {
-    [name: string]: RequestHandler;
+    [name: string]: RequestHandler | ErrorRequestHandler;
 };

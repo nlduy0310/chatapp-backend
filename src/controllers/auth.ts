@@ -2,10 +2,11 @@ import User from '@database/models/User';
 import { RouteController } from '@controllers/types';
 import { hashSync } from 'bcrypt';
 import { NROUND_PASSWORD_HASH } from '@configs/defaults';
+import { RequestHandler, ErrorRequestHandler } from 'express';
 
 let controller: RouteController = {};
 
-controller.handleRegister = async (req, res, next) => {
+controller.handleRegister = (async (req, res, next) => {
     const { email: reqEmail, password: reqPassword } = req.body;
 
     const foundUser = await User.findOne({
@@ -25,6 +26,13 @@ controller.handleRegister = async (req, res, next) => {
     } else {
         return res.status(500).send('Some error happened when creating your account');
     }
-};
+}) as RequestHandler;
 
+controller.handleSuccessLogin = ((req, res, next) => {
+    return res.sendStatus(200);
+}) as RequestHandler;
+
+controller.handleFailedLogin = ((err, req, res, next) => {
+    return res.status(401).send(err.message || 'Authentication failed');
+}) as ErrorRequestHandler;
 export default controller;

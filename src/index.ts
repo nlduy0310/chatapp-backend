@@ -14,8 +14,11 @@ import { ErrorRequestHandler } from 'express';
 // ----- Route imports -----
 import authRouter from '@routes/auth';
 
+// ----- Strategies import -----
+import '@passport/config';
+
 // ----- Other imports -----
-import { DEFAULT_SESSION_SECRET } from '@configs/defaults';
+import { DEFAULT_COOKIE_SECRET, DEFAULT_SESSION_SECRET } from '@configs/defaults';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -23,7 +26,7 @@ const app = express();
 // ----- Configs -----
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET || DEFAULT_COOKIE_SECRET));
 app.use(
     session({
         secret: process.env.SESSION_SECRET || DEFAULT_SESSION_SECRET,
@@ -32,7 +35,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60, // 1 minutes
         },
-    }),
+    })
 );
 app.use(passport.initialize());
 app.use(passport.session());
