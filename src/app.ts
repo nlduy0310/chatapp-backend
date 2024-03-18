@@ -4,7 +4,7 @@ import { DEFAULT_COOKIE_SECRET, DEFAULT_SESSION_SECRET } from '@configs/defaults
 import session from 'express-session';
 import passport from 'passport';
 
-import './passport/config';
+import '@passport/config';
 
 const app = express();
 

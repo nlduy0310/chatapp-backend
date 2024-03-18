@@ -1,8 +1,7 @@
-import { error } from 'console';
 import mongoose from 'mongoose';
 
 mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
-mongoose.connection.on('disconnected', () => console.log('Disconnected to MongoDB'));
+mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
 
 export async function connect(): Promise<[boolean, string]> {
     try {

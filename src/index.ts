@@ -2,12 +2,12 @@ import 'dotenv/config';
 import app from './app';
 
 // ----- Routes -----
-import route from './routes/index';
+import route from '@routes/index';
 route(app);
 
 // ----- Connect -----
 import { connect as connectDB, disconnect as disconnectDB } from '@database/index';
-import { handle as handleAsync } from './utils/async-operations';
+import { handle as handleAsync } from '@utils/async-operations';
 const PORT = process.env.PORT || 3000;
 
 function listen() {
