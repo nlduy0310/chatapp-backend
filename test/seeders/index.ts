@@ -1,6 +1,6 @@
 import minimist from 'minimist';
 import seedUser from './user';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import 'dotenv/config';
 
 type SeederFunction = (hard: boolean) => Promise<void>;
@@ -18,21 +18,24 @@ async function main() {
         return console.error(`Invalid name: %c${argv.name}`, 'color: red');
     }
     let hard = argv._.includes('hard') ? true : false;
+
+    try {
+        await mongoose.connect(process.env.MONGODB_CONNECTION_STRING ?? '');
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        return console.error('Failed to connect to MongoDB: ', error);
+    }
+
     await seederFunction(hard);
-    return console.log('Seeder completed');
+    console.log('Seeder completed');
+    mongoose
+        .disconnect()
+        .then(() => {
+            console.log('Disconnected from MongoDB');
+        })
+        .catch((error) => {
+            console.error('Failed to disconnect from MongoDB: ', error);
+        });
 }
 
-mongoose
-    .connect(process.env.MONGODB_CONNECTION_STRING ?? '')
-    .then(async () => {
-        console.log('Connected to MongoDB');
-        await main();
-    })
-    .catch((err) => {
-        console.log(err);
-        console.error('Can not connect to MongoDB');
-    })
-    .finally(async () => {
-        await mongoose.disconnect();
-        console.log('Disconnected from MongoDB');
-    });
+main();
