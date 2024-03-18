@@ -18,7 +18,7 @@ export default passport.use(
                     throw new Error('Failed to authenticate: Credentials do not match');
                 done(null, foundUser);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
                 done(error);
             }
         }
